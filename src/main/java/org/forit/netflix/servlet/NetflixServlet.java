@@ -22,6 +22,7 @@ public class NetflixServlet extends HttpServlet {
             + "    <script type='text/javascript' src='js/bootstrap.js'></script>"
             + "    <link rel='stylesheet' href='css/bootstrap.css' type='text/css'/>"
             + "    <link rel='icon' href='img/netflix-icon.ico'>"
+            + "    <style>td, th {vertical-align: middle !important}</style>"
             + "</head>";
 
     protected final static String NAVBAR

@@ -79,7 +79,7 @@ public class ClientiServlet extends NetflixServlet {
     }
 
     private void createTabellaUtenti(PrintWriter out, List<UtenteDTO> utenti) {
-        out.println("<div class='table-responsive'>");
+        out.println("<div class='container-fluid table-responsive'>");
         out.println("<table class='table'>");
         out.println(THEAD);
         out.println("<tbody>");
