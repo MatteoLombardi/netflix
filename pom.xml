@@ -3,11 +3,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.forit</groupId>
-    <artifactId>forit-autonoleggio</artifactId>
+    <artifactId>forit-netflix</artifactId>
     <version>1.0</version>
     <packaging>war</packaging>
 
-    <name>autonoleggio</name>
+    <name>netflix</name>
 
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
