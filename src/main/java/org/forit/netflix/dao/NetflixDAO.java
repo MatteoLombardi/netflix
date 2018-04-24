@@ -67,6 +67,16 @@ public class NetflixDAO {
             = "INSERT INTO ENTITA_X_PREMIO (ID_ENTITA, ID_PREMIO, ANNO) "
             + "VALUES (?,?,?)";
 
+    private static final String UPDATE_PERSONA
+            = "UPDATE persona "
+            + "SET nome = ?, cognome = ?, data_nascita = ? "
+            + "WHERE id = ?";
+
+    private static final String UPDATE_UTENTE
+            = "UPDATE utente "
+            + "SET codice_fiscale = ?, mail = ? "
+            + "WHERE id = ?";
+
     static {
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -150,6 +160,36 @@ public class NetflixDAO {
             }
 
             return utente;
+        } catch (SQLException ex) {
+            System.out.println("Si è verificato un errore " + ex.getMessage());
+            throw new NetflixException(ex);
+        }
+    }
+
+    public void updateUtente(UtenteDTO utente) throws NetflixException {
+        try (Connection conn = DriverManager.getConnection(DB_URL)) {
+            conn.setAutoCommit(false);
+
+            try (
+                    PreparedStatement ps1 = conn.prepareStatement(UPDATE_PERSONA);
+                    PreparedStatement ps2 = conn.prepareStatement(UPDATE_UTENTE)) {
+
+                ps1.setString(1, utente.getNome());
+                ps1.setString(2, utente.getCognome());
+                ps1.setDate(3, Date.valueOf(utente.getDataNascita()));
+                ps1.setLong(4, utente.getId());
+                ps1.executeUpdate();
+
+                ps2.setString(1, utente.getCodiceFiscale());
+                ps2.setString(2, utente.getMail());
+                ps2.setLong(3, utente.getId());
+                ps2.executeUpdate();
+
+                conn.commit();
+            } catch (SQLException ex) {
+                conn.rollback();
+                throw ex;
+            }
         } catch (SQLException ex) {
             System.out.println("Si è verificato un errore " + ex.getMessage());
             throw new NetflixException(ex);
