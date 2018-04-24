@@ -37,6 +37,30 @@ public class ClientiServlet extends NetflixServlet {
             + "    </tr>"
             + "</thead>";
 
+    private final static String THEAD_ABBONAMENTI
+            = "<thead>\n"
+            + "                                <tr>\n"
+            + "                                    <th class='col-sm-4'>Descrizione</th>\n"
+            + "                                    <th class='col-sm-2'>Durata</th>\n"
+            + "                                    <th class='col-sm-2'>Costo</th>\n"
+            + "                                    <th class='col-sm-2'>Metodo Pagamento</th>\n"
+            + "                                    <th class='col-sm-2'>Data Sottoscrizione</th>\n"
+            + "                                </tr>\n"
+            + "                            </thead>";
+
+    private final static String THEAD_FILM_NOLEGGIATI
+            = "<thead>\n"
+            + "                                <tr>\n"
+            + "                                    <th class='col-sm-2'>Titolo</th>\n"
+            + "                                    <th class='col-sm-3'>Descrizione</th>\n"
+            + "                                    <th class='col-sm-1'>Anno</th>\n"
+            + "                                    <th class='col-sm-1'>Durata</th>\n"
+            + "                                    <th class='col-sm-2'>Nazione</th>\n"
+            + "                                    <th class='col-sm-2'>Lingua</th>\n"
+            + "                                    <th class='col-sm-1'>Data Noleggio</th>\n"
+            + "                                </tr>\n"
+            + "                            </thead>";
+
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
@@ -56,7 +80,23 @@ public class ClientiServlet extends NetflixServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setContentType("text/html;charset=UTF-8");
 
-        this.listaUtenti(resp);
+        String action = req.getParameter("action");
+        if (action == null) {
+            this.listaUtenti(resp);
+        } else {
+            switch (action) {
+                case "view":
+                    String ID = req.getParameter("ID");
+                    this.dettaglioCliente(resp, Long.parseLong(ID));
+                    break;
+                case "edit":
+                    break;
+                case "new":
+                    break;
+                default:
+                    this.listaUtenti(resp);
+            }
+        }
     }
 
     private void listaUtenti(HttpServletResponse resp) throws IOException {
@@ -103,5 +143,23 @@ public class ClientiServlet extends NetflixServlet {
         out.println("</tbody>");
         out.println("</table>");
         out.println("</div>");
+    }
+
+    private void dettaglioCliente(HttpServletResponse resp, long ID) throws IOException {
+        UtenteDTO utente;
+        String messaggioErrore = null;
+
+        try {
+            NetflixDAO netflixDAO = new NetflixDAO();
+            utente = netflixDAO.getUtente(ID);
+        } catch (NetflixException ex) {
+            messaggioErrore = "Impossibile leggere i dati dal database";
+        }
+
+        try (PrintWriter out = resp.getWriter()) {
+            this.apriHTML(out, messaggioErrore, "$$clienti$$");
+
+            this.chiudiHTML(out);
+        }
     }
 }

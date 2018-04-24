@@ -16,8 +16,6 @@ import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.forit.netflix.dto.AbbonamentoDTO;
 import org.forit.netflix.dto.AttoreDTO;
 import org.forit.netflix.dto.FilmDTO;
@@ -73,7 +71,7 @@ public class NetflixDAO {
         try {
             Class.forName("com.mysql.jdbc.Driver");
         } catch (ClassNotFoundException ex) {
-            ex.printStackTrace();
+            System.out.println("Si è verificato un errore " + ex.getMessage());
         }
     }
 
