@@ -146,7 +146,7 @@ public class ClientiServlet extends NetflixServlet {
     }
 
     private void dettaglioCliente(HttpServletResponse resp, long ID) throws IOException {
-        UtenteDTO utente;
+        UtenteDTO utente = null;
         String messaggioErrore = null;
 
         try {
@@ -159,7 +159,67 @@ public class ClientiServlet extends NetflixServlet {
         try (PrintWriter out = resp.getWriter()) {
             this.apriHTML(out, messaggioErrore, "$$clienti$$");
 
+            if (utente != null) {
+                this.creaDettaglioUtente(out, utente);
+            }
+
             this.chiudiHTML(out);
         }
+    }
+
+    private void creaDettaglioUtente(PrintWriter out, UtenteDTO utente) {
+        out.println("<form class='container-fluid'>");
+        out.println("<div class='panel panel-default'>");
+        out.println("<div class='panel-heading'>");
+        out.println("<div class='panel-title'>Dettaglio Utente</div>");
+        out.println("</div>");
+        out.println("<div class='panel-body'>");
+
+        this.creaDatiAnagrafici(out, utente);
+        this.creaTabellaAbbonamenti(out, utente);
+        this.creaTabellaFilmNoleggiati(out, utente);
+
+        out.println("</div>");
+        out.println("<div class='panel-footer text-right'>");
+        out.println("</div>");
+        out.println("</div>");
+        out.println("</form>");
+    }
+
+    private void creaDatiAnagrafici(PrintWriter out, UtenteDTO utente) {
+        out.println("<div class='row'>");
+        out.println("<div class='col-sm-6'>");
+        out.println("<label>Nome</label>");
+        out.println("<input type='text' name='nome' class='form-control' disabled='disabled'/>");
+        out.println("</div>");
+        out.println("<div class='col-sm-6'>");
+        out.println("<label>Cognome</label>");
+        out.println("<input type='text' name='cognome' class='form-control' disabled='disabled'/>");
+        out.println("</div>");
+        out.println("</div>");
+        out.println("<div class='row'>");
+        out.println("<div class='col-sm-6'>");
+        out.println("<label>Data di Nascita</label>");
+        out.println("<input type='date' name='dataNascita' class='form-control' disabled='disabled'/>");
+        out.println("</div>");
+        out.println("<div class='col-sm-6'>");
+        out.println("<label>Codice Fiscale</label>");
+        out.println("<input type='text' name='codiceFiscale' class='form-control' disabled='disabled'/>");
+        out.println("</div>");
+        out.println("</div>");
+        out.println("<div class='row'>");
+        out.println("<div class='col-sm-12'>");
+        out.println("<label>Mail</label>");
+        out.println("<input type='email' name='mail' class='form-control' disabled='disabled'/>");
+        out.println("</div>");
+        out.println("</div>");
+    }
+
+    private void creaTabellaAbbonamenti(PrintWriter out, UtenteDTO utente) {
+
+    }
+
+    private void creaTabellaFilmNoleggiati(PrintWriter out, UtenteDTO utente) {
+
     }
 }
