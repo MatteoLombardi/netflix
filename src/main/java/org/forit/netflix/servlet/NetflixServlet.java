@@ -17,11 +17,11 @@ public class NetflixServlet extends HttpServlet {
     protected final static String HEAD
             = "<head>"
             + "    <title>Netflix</title>"
-            + "    <meta http-equiv='Content-Type' content='text/html; charset=UTF-8'>"
+            + "    <meta http-equiv='Content-Type' content='text/html; charset=UTF-8'/>"
             + "    <script type='text/javascript' src='js/jquery-3.3.1.js'></script>"
             + "    <script type='text/javascript' src='js/bootstrap.js'></script>"
             + "    <link rel='stylesheet' href='css/bootstrap.css' type='text/css'/>"
-            + "    <link rel='icon' href='img/netflix-icon.ico'>"
+            + "    <link rel='icon' href='img/netflix-icon.ico'/>"
             + "    <style>td, th {vertical-align: middle !important}</style>"
             + "</head>";
 
@@ -41,7 +41,7 @@ public class NetflixServlet extends HttpServlet {
             + "        <div class='collapse navbar-collapse' id='navigazione'>"
             + "            <ul class='nav navbar-nav'>"
             + "                <li class='$$clienti$$'><a href='clienti'>Clienti</a></li>"
-            + "                <li class='$$attori$$'><a href='#'>Attori</a></li>"
+            + "                <li class='$$attori$$'><a href='faces/attori.xhtml'>Attori</a></li>"
             + "                <li class='$$registi$$'><a href='#'>Registi</a></li>"
             + "                <li class='$$film$$'><a href='#'>Film</a></li>"
             + "                <li class='$$premi$$'><a href='#'>Premi</a></li>"

@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+    <h:head>
+        <title>Netflix</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <script type="text/javascript" src="../js/jquery-3.3.1.js"></script>
+        <script type="text/javascript" src="../js/bootstrap.js"></script>
+        <link rel="stylesheet" href="../css/bootstrap.css" type="text/css"/>
+        <link rel="icon" href="../img/netflix-icon.ico"/>
+
+        <style>td, th {vertical-align: middle !important}</style>        
+    </h:head>
+    <h:body>
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navigazione">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="../index.html">
+                        <img alt="Netflix" src="../img/netflix-icon.ico" width="20"/>
+                    </a>
+                </div>
+
+                <div class="collapse navbar-collapse" id="navigazione">
+                    <ul class="nav navbar-nav">
+                        <li><a href="../clienti">Clienti</a></li>
+                        <li class="active"><a href="../faces/attori.xhtml">Attori</a></li>
+                        <li><a href="#">Registi</a></li>
+                        <li><a href="#">Film</a></li>
+                        <li><a href="#">Premi</a></li>
+                        <li><a href="#">Abbonamenti</a></li>                        
+                    </ul>                                        
+                </div>
+            </div>
+        </nav>
+
+        <h:form id="tabella_attori">
+            <div class='container-fluid table-responsive'>
+                <table class='table'>
+                    <thead>
+                        <tr>
+                            <th class='col-sm-1'>
+                                <h:commandButton value="#{msg.new_actor}" class='btn btn-primary'></h:commandButton>
+                            </th>
+                            <th class='col-sm-4'>#{msg.actor_name}</th>
+                            <th class='col-sm-4'>#{msg.actor_surname}</th>
+                            <th class='col-sm-2'>#{msg.actor_birthdate}</th>
+                            <th class='col-sm-2'>#{msg.actor_nationality}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <ui:repeat value="#{aBean.attori}" var="attore">
+                            <tr>
+                                <td>
+                                    <h:commandLink class='btn btn-default' title='#{msg.actor_show_detail}'>
+                                        <span class='glyphicon glyphicon-eye-open'></span>
+                                    </h:commandLink>
+                                    <h:commandLink class='btn btn-default' title='#{msg.actor_edit_data}'>
+                                        <span class='glyphicon glyphicon-pencil'></span>
+                                    </h:commandLink>
+                                </td>
+                                <td>#{attore.nome}</td>
+                                <td>#{attore.cognome}</td>
+                                <td>#{attore.dataNascita}</td>
+                                <td>#{attore.nazione}</td>
+                            </tr>
+                        </ui:repeat>
+                    </tbody>
+                </table>
+            </div>
+        </h:form>
+    </h:body>
+</html>
+
