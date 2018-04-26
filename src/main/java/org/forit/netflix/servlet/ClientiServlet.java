@@ -53,12 +53,12 @@ public class ClientiServlet extends NetflixServlet {
             = "<thead>"
             + "    <tr>"
             + "        <th class='col-sm-2'>Titolo</th>"
-            + "        <th class='col-sm-3'>Descrizione</th>"
+            + "        <th class='col-sm-4'>Descrizione</th>"
             + "        <th class='col-sm-1'>Anno</th>"
             + "        <th class='col-sm-1'>Durata</th>"
-            + "        <th class='col-sm-2'>Nazione</th>"
-            + "        <th class='col-sm-2'>Lingua</th>"
-            + "        <th class='col-sm-1'>Data Noleggio</th>"
+            + "        <th class='col-sm-1'>Nazione</th>"
+            + "        <th class='col-sm-1'>Lingua</th>"
+            + "        <th class='col-sm-2'>Data Noleggio</th>"
             + "    </tr>"
             + "</thead>";
 
@@ -84,13 +84,23 @@ public class ClientiServlet extends NetflixServlet {
         try {
             UtenteDTO utente = new UtenteDTO(ID, nome, cognome, dataNascita, codiceFiscale, mail);
             NetflixDAO netflixDAO = new NetflixDAO();
-            netflixDAO.updateUtente(utente);
+
+            if (ID == -1) {
+                netflixDAO.insertUtente(utente);
+            } else {
+                netflixDAO.updateUtente(utente);
+            }
 
 //            this.doGet(req, resp);
             resp.sendRedirect("clienti");
         } catch (NetflixException ex) {
             System.out.println("Si è verificato un errore " + ex.getMessage());
-            resp.sendRedirect("clienti?ID=" + ID + "&action=edit");
+
+            if (ID == -1) {
+                resp.sendRedirect("clienti?action=new");
+            } else {
+                resp.sendRedirect("clienti?ID=" + ID + "&action=edit");
+            }
         }
     }
 
@@ -112,6 +122,7 @@ public class ClientiServlet extends NetflixServlet {
                     this.dettaglioCliente(resp, Long.parseLong(ID), false);
                     break;
                 case "new":
+                    this.dettaglioCliente(resp, -1, false);
                     break;
                 default:
                     this.listaUtenti(resp);
@@ -169,11 +180,15 @@ public class ClientiServlet extends NetflixServlet {
         UtenteDTO utente = null;
         String messaggioErrore = null;
 
-        try {
-            NetflixDAO netflixDAO = new NetflixDAO();
-            utente = netflixDAO.getUtente(ID);
-        } catch (NetflixException ex) {
-            messaggioErrore = "Impossibile leggere i dati dal database";
+        if (ID == -1) {
+            utente = new UtenteDTO(-1, "", "", null, "", "");
+        } else {
+            try {
+                NetflixDAO netflixDAO = new NetflixDAO();
+                utente = netflixDAO.getUtente(ID);
+            } catch (NetflixException ex) {
+                messaggioErrore = "Impossibile leggere i dati dal database";
+            }
         }
 
         try (PrintWriter out = resp.getWriter()) {
