@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.annotation.PostConstruct;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.ViewScoped;
 import org.forit.netflix.dao.NetflixDAO;
 import org.forit.netflix.dto.AttoreDTO;
@@ -16,8 +16,12 @@ import org.forit.netflix.exception.NetflixException;
 public class AttoreBean {
 
     private List<AttoreDTO> attori = new ArrayList<>();
-    private AttoreDTO attore = new AttoreDTO();
+    private AttoreDTO attore = new AttoreDTO(-1, "", "", LocalDate.now(), "");
+    private long idNazione = -1;
     private boolean disabled;
+
+    @ManagedProperty(value = "#{nBean}")
+    private NazioneBean nazioneBean;
 
     @PostConstruct
     public void init() {
@@ -26,6 +30,22 @@ public class AttoreBean {
 
     public List<AttoreDTO> getAttori() {
         return attori;
+    }
+
+    public void setNazioneBean(NazioneBean nazioneBean) {
+        this.nazioneBean = nazioneBean;
+    }
+
+    public NazioneBean getNazioneBean() {
+        return nazioneBean;
+    }
+
+    public void setIdNazione(long idNazione) {
+        this.idNazione = idNazione;
+    }
+
+    public long getIdNazione() {
+        return idNazione;
     }
 
     public AttoreDTO getAttore() {
@@ -42,17 +62,19 @@ public class AttoreBean {
     }
 
     public void loadAttore(long ID, boolean disabled) {
-        
+
         this.disabled = disabled;
         if (ID == -1) {
             attore = new AttoreDTO(-1, "", "", LocalDate.now(), "");
+            idNazione = -1;
         } else {
             try {
                 NetflixDAO netflixDAO = new NetflixDAO();
                 attore = netflixDAO.getAttore(ID);
-                //attore=
+                idNazione = nazioneBean.getIdByDescrizione(attore.getNazione());
             } catch (NetflixException ex) {
                 attore = new AttoreDTO(-1, "", "", LocalDate.now(), "");
+                idNazione = -1;
             }
         }
     }
@@ -61,15 +83,16 @@ public class AttoreBean {
         try {
             NetflixDAO netflixDAO = new NetflixDAO();
             if (attore.getID() == -1) {
-                netflixDAO.insertAttore(attore.getNome(), attore.getCognome(), attore.getDataNascita(), 1);
+                netflixDAO.insertAttore(attore.getNome(), attore.getCognome(), attore.getDataNascita(), idNazione);
             } else {
-                netflixDAO.updateAttore(attore.getID(), attore.getNome(), attore.getCognome(), attore.getDataNascita(), 1);
+                netflixDAO.updateAttore(attore.getID(), attore.getNome(), attore.getCognome(), attore.getDataNascita(), idNazione);
             }
             this.loadAttori();
         } catch (NetflixException ex) {
         }
     }
-    public boolean getDisabled(){
+
+    public boolean getDisabled() {
         return disabled;
     }
 }

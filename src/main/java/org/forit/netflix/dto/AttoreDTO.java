@@ -53,6 +53,14 @@ public class AttoreDTO {
         this.dataNascita = dataNascita;
     }
 
+    public String getDataNascitaAsString() {
+        return dataNascita.toString();
+    }
+    
+   public void setDataNascitaAsString(String dataNascita){
+       this.dataNascita = LocalDate.parse(dataNascita);
+   }
+
     public String getNazione() {
         return nazione;
     }
