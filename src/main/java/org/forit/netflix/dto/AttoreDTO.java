@@ -1,17 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package org.forit.netflix.dto;
 
 import java.time.LocalDate;
 import java.util.Objects;
 
-/**
- *
- * @author UTENTE
- */
 public class AttoreDTO {
 
     private long ID;
@@ -114,5 +105,5 @@ public class AttoreDTO {
     @Override
     public String toString() {
         return "AttoreDTO{" + "ID=" + ID + ", nome=" + nome + ", cognome=" + cognome + ", dataNascita=" + dataNascita + ", nazione=" + nazione + '}';
-    }       
+    }
 }
