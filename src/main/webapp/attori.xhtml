@@ -14,11 +14,11 @@
         <link rel='icon' href='../img/netflix-icon.ico'/>
 
         <style>td, th {vertical-align: middle !important}</style>
-        <script type="text/javascript">
+        <script type='text/javascript'>
             function mostraModale() {
                 $('#myModal').modal('show')
             }
-
+            
             function nascondiModale() {
                 $('#myModal').modal('hide')
             }
@@ -57,7 +57,9 @@
                     <thead>
                         <tr>
                             <th class='col-sm-1'>
-                                <h:commandButton value='#{msg.new_actor}' class='btn btn-primary'></h:commandButton>
+                                <h:commandButton value='#{msg.new_actor}' class='btn btn-primary'>
+                                    <f:ajax render='modale_attori' listener='#{aBean.loadAttore(-1, false)}' onevent='mostraModale' />
+                                </h:commandButton>
                             </th>
                             <th class='col-sm-4'>#{msg.actor_name}</th>
                             <th class='col-sm-4'>#{msg.actor_surname}</th>
@@ -71,10 +73,11 @@
                                 <td>
                                     <h:commandLink class='btn btn-default' title='#{msg.actor_show_detail}'>
                                         <span class='glyphicon glyphicon-eye-open'></span>
-                                        <f:ajax render='modale_attori' listener='#{aBean.loadAttore(attore.ID)}' onevent='mostraModale' />
+                                        <f:ajax render='modale_attori' listener='#{aBean.loadAttore(attore.ID, true)}' onevent='mostraModale' />
                                     </h:commandLink>
                                     <h:commandLink class='btn btn-default' title='#{msg.actor_edit_data}'>
                                         <span class='glyphicon glyphicon-pencil'></span>
+                                        <f:ajax render='modale_attori' listener='#{aBean.loadAttore(attore.ID, false)}' onevent='mostraModale' />
                                     </h:commandLink>
                                 </td>
                                 <td>#{attore.nome}</td>
@@ -102,16 +105,19 @@
                         <div class='modal-body'>
                             <div class='col-sm-6'>
                                 <label>Nome</label>
-                                <h:inputText class='form-control' value='#{aBean.attore.nome}'/>
+                                <h:inputText class='form-control' value='#{aBean.attore.nome}' disabled='#{aBean.disabled}'/>
                             </div>
                             <div class='col-sm-6'>
                                 <label>Cognome</label>
-                                <h:inputText class='form-control' value='#{aBean.attore.cognome}'/>
+                                <h:inputText class='form-control' value='#{aBean.attore.cognome}' disabled='#{aBean.disabled}'/>
                             </div>
                         </div>
                         <div class='modal-footer'>
+                            <h:commandButton class='btn btn-primary' value='Salva' disabled='#{aBean.disabled}'>
+                                <f:ajax execute='modale_attori' render='tabella_attori' listener='#{aBean.saveAttore()}' onevent='nascondiModale' />
+                            </h:commandButton>
                             <button type='button' class='btn btn-default' data-dismiss='modal'>Chiudi</button>
-                            <button type='button' class='btn btn-primary'>Salva Modifiche</button>
+
                         </div>
                     </div>
                 </h:form>

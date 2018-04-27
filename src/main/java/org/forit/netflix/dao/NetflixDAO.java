@@ -15,7 +15,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import org.forit.netflix.dto.AbbonamentoDTO;
 import org.forit.netflix.dto.AttoreDTO;
 import org.forit.netflix.dto.FilmDTO;
@@ -73,7 +75,7 @@ public class NetflixDAO {
 
     private static final String UPDATE_PERSONA
             = "UPDATE persona "
-            + "SET nome = ?, cognome = ?, data_nascita = ? "
+            + "SET nome = ?, cognome = ?, data_di_nascita = ? "
             + "WHERE id = ?";
 
     private static final String UPDATE_UTENTE
@@ -85,8 +87,13 @@ public class NetflixDAO {
             = "SELECT p.*, n.descrizione "
             + "FROM persona p, attore a, nazione n "
             + "WHERE p.id=? and p.id = a.id and a.id_nazione = n.id";
+
     private static final String UPDATE_ATTORE
-            = "UPDATE ATTORE SET ID_ATTORE = ? WHERE ID = ?";
+            = "UPDATE ATTORE SET ID_nazione = ? WHERE ID = ?";
+
+    private static final String LISTA_NAZIONI
+            = "SELECT * FROM netflix.nazione "
+            + "ORDER BY DESCRIZIONE";
 
     static {
         try {
@@ -315,7 +322,7 @@ public class NetflixDAO {
         try (
                 Connection conn = DriverManager.getConnection(DB_URL);
                 PreparedStatement st = conn.prepareStatement(ATTORE);) {
-            
+
             st.setLong(1, ID);
             ResultSet rs = st.executeQuery();
             rs.next();
@@ -334,7 +341,7 @@ public class NetflixDAO {
         }
     }
 
-    public void updateAttore(long ID, String nome, String cognome, LocalDate dataNascita, long idNazione) throws NetflixException{
+    public void updateAttore(long ID, String nome, String cognome, LocalDate dataNascita, long idNazione) throws NetflixException {
         try (Connection conn = DriverManager.getConnection(DB_URL)) {
             conn.setAutoCommit(false);
 
@@ -360,6 +367,23 @@ public class NetflixDAO {
         } catch (SQLException ex) {
             System.out.println("Si è verificato un errore " + ex.getMessage());
             throw new NetflixException(ex);
+        }
+    }
+
+    public Map<Long, String> getListaNazioni() throws NetflixException {
+        try (Connection conn = DriverManager.getConnection(DB_URL);
+                Statement st = conn.createStatement();
+                ResultSet rs = st.executeQuery(LISTA_NAZIONI)) {
+            Map<Long, String> nazioni = new LinkedHashMap<>();
+            while(rs.next()){
+                long id = rs.getLong("ID");
+                String descrizione = rs.getString("DESCRIZIONE");
+                nazioni.put(id, descrizione);
+            }
+            return nazioni;
+        } catch (SQLException ex) {
+            System.out.println("Errore: " + ex.getMessage());
+            throw new NetflixException();
         }
     }
 }
