@@ -18,7 +18,7 @@
             function mostraModale() {
                 $('#myModal').modal('show')
             }
-            
+
             function nascondiModale() {
                 $('#myModal').modal('hide')
             }
@@ -111,13 +111,26 @@
                                 <label>Cognome</label>
                                 <h:inputText class='form-control' value='#{aBean.attore.cognome}' disabled='#{aBean.disabled}'/>
                             </div>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <label>Data di Nascita</label>
+                                </div>
+                                <div class="col-sm-6">
+                                    <label>Nazione</label>
+                                    <h:selectOneMenu class="form-control">
+                                        <f:selectItem itemValue="-1" itemLabel="-----Seleziona-----" />
+                                        <f:selectItems value="#{nBean.idNazioni}" var="idNazioni"
+                                                       itemValue="#{idNazioni}"
+                                                       itemLabel="#{nBean.getDescrizioneById(idNazioni)}" />
+                                    </h:selectOneMenu>
+                                </div>
+                            </div>
                         </div>
                         <div class='modal-footer'>
                             <h:commandButton class='btn btn-primary' value='Salva' disabled='#{aBean.disabled}'>
                                 <f:ajax execute='modale_attori' render='tabella_attori' listener='#{aBean.saveAttore()}' onevent='nascondiModale' />
                             </h:commandButton>
                             <button type='button' class='btn btn-default' data-dismiss='modal'>Chiudi</button>
-
                         </div>
                     </div>
                 </h:form>

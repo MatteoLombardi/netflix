@@ -92,7 +92,7 @@ public class NetflixDAO {
             = "UPDATE ATTORE SET ID_nazione = ? WHERE ID = ?";
 
     private static final String LISTA_NAZIONI
-            = "SELECT * FROM netflix.nazione "
+            = "SELECT * FROM nazione "
             + "ORDER BY DESCRIZIONE";
 
     static {
