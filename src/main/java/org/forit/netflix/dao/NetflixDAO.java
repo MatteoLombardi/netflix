@@ -315,8 +315,9 @@ public class NetflixDAO {
         try (
                 Connection conn = DriverManager.getConnection(DB_URL);
                 PreparedStatement st = conn.prepareStatement(ATTORE);) {
-            ResultSet rs = st.executeQuery();
+            
             st.setLong(1, ID);
+            ResultSet rs = st.executeQuery();
             rs.next();
             long id = rs.getLong("ID");
             String nome = rs.getString("NOME");
