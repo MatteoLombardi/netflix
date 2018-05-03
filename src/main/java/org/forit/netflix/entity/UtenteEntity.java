@@ -2,11 +2,14 @@ package org.forit.netflix.entity;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.SecondaryTable;
 import javax.persistence.Table;
@@ -28,6 +31,9 @@ public class UtenteEntity extends PersonaEntity implements Serializable {
 
     @Column(table = "utente", name = "MAIL", unique = false, nullable = false)
     private String mail;
+
+    @OneToMany(mappedBy = "persona")
+    private List<PXAEntity> abbonamenti = new ArrayList<>();
 
     public UtenteEntity(String codiceFiscale, String mail) {
         this.codiceFiscale = codiceFiscale;
@@ -57,6 +63,14 @@ public class UtenteEntity extends PersonaEntity implements Serializable {
 
     public void setMail(String mail) {
         this.mail = mail;
+    }
+
+    public List<PXAEntity> getAbbonamenti() {
+        return abbonamenti;
+    }
+
+    public void setAbbonamenti(List<PXAEntity> abbonamenti) {
+        this.abbonamenti = abbonamenti;
     }
 
     @Override
