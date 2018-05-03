@@ -16,7 +16,7 @@ import javax.persistence.Table;
 @NamedQueries({
     @NamedQuery(
             name = "nazione.selectAll",
-            query = "select n from NazioneEntity n ORDER BY N.descrizione")
+            query = "select n from NazioneEntity n ORDER BY n.descrizione")
 })
 public class NazioneEntity implements Serializable {
 
