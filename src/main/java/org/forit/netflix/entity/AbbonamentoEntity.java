@@ -1,5 +1,6 @@
 package org.forit.netflix.entity;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
 import javax.persistence.Column;
@@ -11,7 +12,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "abbonamento")
-public class AbbonamentoEntity {
+public class AbbonamentoEntity implements Serializable{
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
