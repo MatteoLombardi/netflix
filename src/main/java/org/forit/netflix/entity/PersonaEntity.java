@@ -69,10 +69,10 @@ public abstract class PersonaEntity {
     @Override
     public int hashCode() {
         int hash = 5;
-        hash = 23 * hash + (int) (this.ID ^ (this.ID >>> 32));
-        hash = 23 * hash + Objects.hashCode(this.nome);
-        hash = 23 * hash + Objects.hashCode(this.cognome);
-        hash = 23 * hash + Objects.hashCode(this.dataNascita);
+        hash = 31 * hash + (int) (this.ID ^ (this.ID >>> 32));
+        hash = 31 * hash + Objects.hashCode(this.nome);
+        hash = 31 * hash + Objects.hashCode(this.cognome);
+        hash = 31 * hash + Objects.hashCode(this.dataNascita);
         return hash;
     }
 
@@ -107,5 +107,4 @@ public abstract class PersonaEntity {
     public String toString() {
         return "PersonaEntity{" + "ID=" + ID + ", nome=" + nome + ", cognome=" + cognome + ", dataNascita=" + dataNascita + '}';
     }
-
 }

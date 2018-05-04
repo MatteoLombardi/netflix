@@ -5,15 +5,21 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.SecondaryTable;
 import javax.persistence.Table;
 
+/**
+ *
+ * @author UTENTE
+ */
 @Entity
 @Table(name = "persona")
 @SecondaryTable(name = "utente", pkJoinColumns = @PrimaryKeyJoinColumn(name = "ID"))
@@ -21,7 +27,7 @@ import javax.persistence.Table;
 @NamedQueries({
     @NamedQuery(
             name = "utente.selectAll",
-            query = " SELECT u from UtenteEntity u ORDER BY u.cognome, u.nome"
+            query = "SELECT u FROM UtenteEntity u ORDER BY u.cognome, u.nome"
     )
 })
 public class UtenteEntity extends PersonaEntity implements Serializable {
@@ -32,13 +38,9 @@ public class UtenteEntity extends PersonaEntity implements Serializable {
     @Column(table = "utente", name = "MAIL", unique = false, nullable = false)
     private String mail;
 
-    @OneToMany(mappedBy = "persona")
-    private List<PXAEntity> abbonamenti = new ArrayList<>();
-
-    public UtenteEntity(String codiceFiscale, String mail) {
-        this.codiceFiscale = codiceFiscale;
-        this.mail = mail;
-    }
+    @ElementCollection()
+    @CollectionTable(name = "persona_x_abbonamento", joinColumns = @JoinColumn(name = "id_persona"))
+    private List<AbbonamentoPerUtenteEntity> abbonamenti = new ArrayList<>();
 
     public UtenteEntity() {
     }
@@ -65,19 +67,20 @@ public class UtenteEntity extends PersonaEntity implements Serializable {
         this.mail = mail;
     }
 
-    public List<PXAEntity> getAbbonamenti() {
+    public List<AbbonamentoPerUtenteEntity> getAbbonamenti() {
         return abbonamenti;
     }
 
-    public void setAbbonamenti(List<PXAEntity> abbonamenti) {
+    public void setAbbonamenti(List<AbbonamentoPerUtenteEntity> abbonamenti) {
         this.abbonamenti = abbonamenti;
     }
 
     @Override
     public int hashCode() {
-        int hash = 3;
-        hash = 19 * hash + Objects.hashCode(this.codiceFiscale);
-        hash = 19 * hash + Objects.hashCode(this.mail);
+        int hash = 7;
+        hash = 53 * hash + super.hashCode();
+        hash = 53 * hash + Objects.hashCode(this.codiceFiscale);
+        hash = 53 * hash + Objects.hashCode(this.mail);
         return hash;
     }
 
@@ -92,6 +95,9 @@ public class UtenteEntity extends PersonaEntity implements Serializable {
         if (getClass() != obj.getClass()) {
             return false;
         }
+        if (!super.equals(obj)) {
+            return false;
+        }
         final UtenteEntity other = (UtenteEntity) obj;
         if (!Objects.equals(this.codiceFiscale, other.codiceFiscale)) {
             return false;
@@ -104,7 +110,6 @@ public class UtenteEntity extends PersonaEntity implements Serializable {
 
     @Override
     public String toString() {
-        return "UtenteEntity{" + "codiceFiscale=" + codiceFiscale + ", mail=" + mail + '}';
+        return "UtenteEntity{" + "codiceFiscale=" + codiceFiscale + ", mail=" + mail + ", " + super.toString() + "}";
     }
-
 }
